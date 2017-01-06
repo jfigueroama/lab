@@ -11,7 +11,7 @@
   {:id id
    :x (rand-int 800)
    :y (rand-int 600)
-   :r (inc (rand-int 10))
+   :r (inc (rand-int 50))
    :c (rand-color)
    :sw (rand-int 3)
    :fc (rand-color)})
