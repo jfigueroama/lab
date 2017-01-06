@@ -5,6 +5,20 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.9.0-alpha14"]
                  
+                 ; Client
+                 [org.clojure/clojurescript "1.9.293"]
+                 [reagent "0.6.0" :exclusions
+                                     [org.clojure/tools.reader
+                                      cljsjs/react
+                                      ;cljsjs/react-dom
+                                      ]]
+                 [binaryage/devtools "0.8.3"]
+                 [re-frame "0.9.0" :exclusions [cljsjs/react]]
+                 [cljs-ajax "0.5.8"]
+                 [cljs-react-material-ui "0.2.30"]
+                 [com.cognitect/transit-cljs "0.8.239"]
+                 [keybind "2.0.0"]
+
                  ; Server
                  [http-kit "2.2.0"]    ; web server
                  [cheshire "5.6.3"]    ; json
