@@ -5,11 +5,6 @@
   (:require-macros [devcards.core :as dc :refer [defcard defcard-rg]]))
 
 
-(def state
-  (reagent/atom
-    {:contador 0}))
-
-
 (def handlers
   {:assoc-in (fn assoc-in-hn
                [db [_ path value]]
@@ -29,13 +24,14 @@
 
 (defcard-rg primera
   "Some docs"
-  (fn [contador owner]
+  (fn [state owner]
     [:span
-     [:strong "Contador: " @contador]
+     [:strong "Contador: " (:contador @state)]
      [:input {:value "+"
               :type "button"
-              :on-click #(dispatch [:inc])}]])
-  (reagent/atom (:contador @state)))
+              :on-click #(reset! state
+                                 (update @state :contador inc))}]])
+  (reagent/atom {:contador 0}))
 
 
 (defcard-rg grafica-svg
@@ -55,16 +51,32 @@
                  (utils/get-transit (str "/rand/point?n=" (:n @state))
                                     (fn gthn [tr]
                                       (do
-                                        (swap! state #(assoc % :points tr))
-                                        (utils/info (str "Pintados " (:n @state) " puntos"))))))}
+                                        (swap! state #(assoc %
+                                                             :points
+                                                             (zipmap
+                                                               (range (count tr))
+                                                                tr)))
+                                        (utils/info (str "Pintados "
+                                                         (:n @state)
+                                                         " puntos"))))))}
       "Pintar"]
     (into
       [:svg {:width "800" :height "600"}]
-      (for [p (:points @state)]
-        ^{:key (:id p)}
+      (for [[k p] (:points @state)]
+        ^{:key k}
         [:circle.point
          {:on-click #(utils/info "Clicleado " (-> % .-target .-id))
-          :id (str "point" (:id p))
+          :on-mouse-over
+          (fn [ev]
+            (let [o (.-target ev)
+                  oid (long (.getAttribute o "data-id"))]
+              (swap! state
+                     (fn [x] (assoc x
+                                    :points
+                                    (dissoc (:points @state) oid))))))
+
+          :id (str "point" k)
+          :data-id k
           :cx (:x p) :cy (:y p) :r (:r p) :stroke (:c p)
           :stroke-width (:sw p)  :fill (:fc p)}]))])
-  (reagent/atom {:n 100 :points []}))
+  (reagent/atom {:n 100 :points {}}))

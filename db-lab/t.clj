@@ -1,5 +1,11 @@
-(require '[hugsql.core :refer [db-run]])
 (require '[com.hypirion.clj-xchart :as c])
+
+(require '[db-lab.utils :refer [q exec insert]])
+(require '[db-lab.prestamos :refer
+           [operaciones-seguras operaciones-inseguras
+            operacion-aleatoria pago-inseguro prestamo-inseguro]])
+
+
 #_(require '[gorilla-plot.core :as gp :refer [plot histogram bar-chart list-plot]])
 #_(require '[gorilla-repl.table :as gt :refer [table-view]])
 
@@ -14,27 +20,27 @@
          :classname "com.mysql.cj.jdbc.Driver"
          :subprotocol "mysql"})
 
+(def pdb {:subname (str "//localhost:3306/prestamos?"
+                       "useUnicode=yes"
+                       "&characterEncoding=UTF-8"
+                       "&serverTimezone=UTC")
+         :user "root"
+         :password ""
+         :classname "com.mysql.cj.jdbc.Driver"
+         :subprotocol "mysql"})
 
-(db-run db "select * from profesor")
+(def epdb {:subname (str "//10.10.1.148:3306/prestamo?"
+                       "useUnicode=yes"
+                       "&characterEncoding=UTF-8"
+                       "&serverTimezone=UTC")
+         :user "puser"
+         :password "secreto"
+         :classname "com.mysql.cj.jdbc.Driver"
+         :subprotocol "mysql"})
 
-(defn q
-  ([db sql params]
-   (db-run db sql params))
-  ([db sql]
-   (q db sql {})))
 
-(defn exec
-  ([db sql params]
-   (db-run  db sql params :execute :affected))
-  ([db sql]
-   (exec db sql {})))
 
-(defn insert
-  ([db sql params]
-   (db-run  db sql params :insert :returning-execute))
-  ([db sql]
-   (insert db sql {})))
-
+;(db-run db "select * from profesor")
 
 (exec db "CREATE TEMPORARY TABLE pjose AS (SELECT * FROM profesor WHERE nombres LIKE :nombres ESCAPE \"!\")" {:nombres "%os%"})
 
@@ -75,4 +81,24 @@
 
 (qs db SELECT * FROM  profesor WHERE apellidos LIKE "%Figueroa%")
 
+;; ----------------------------------------------------------
+; PRESTAMOS
 
+;;; ---------------------------------
+(doseq [x (range 0 10)]
+  (future (operaciones-inseguras 3000 pdb)))
+
+(doseq [x (range 0 10)]
+  (future (operaciones-seguras 3000 pdb)))
+
+
+
+(doseq [x (range 1 10000)]
+  (future
+    (try
+      (operacion-segura pdb (operacion-aleatoria pdb 1))
+      (catch Exception e (prn (.getMessage e))))))
+
+(prestar-inseguro pdb 1 100)
+(pagar-inseguro pdb 1 100)
+(pagar-seguro pdb 1 100)
