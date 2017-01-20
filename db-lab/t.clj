@@ -2,8 +2,8 @@
 
 (require '[db-lab.utils :refer [q exec insert]])
 (require '[db-lab.prestamos :refer
-           [operaciones-seguras operaciones-inseguras
-            operacion-aleatoria pago-inseguro prestamo-inseguro]])
+           [operaciones-seguras operaciones-inseguras limpiar fecha-random-gen
+            operacion-aleatoria pago-inseguro prestamo-inseguro]] :reload)
 
 
 #_(require '[gorilla-plot.core :as gp :refer [plot histogram bar-chart list-plot]])
@@ -84,21 +84,78 @@
 ;; ----------------------------------------------------------
 ; PRESTAMOS
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; UTILS
+(def fecha-random
+  (partial fecha-random-gen {:year (range 2000 2017) :month (range 1 13) :day (range 1 29)
+                             :hour (range 7 17) :minute (range 1 60) :second (range 1 60)}))
+
+
 ;;; ---------------------------------
-(doseq [x (range 0 10)]
-  (future (operaciones-inseguras 3000 pdb)))
+
+(prestamo-inseguro epdb  1 500 (fecha-random))
+
+(q epdb "SELECT * FROM comprobador")
 
 (doseq [x (range 0 10)]
-  (future (operaciones-seguras 3000 pdb)))
+  (future (operaciones-inseguras 100 (range 1 11) fecha-random epdb)))
+
+(doseq [x (range 1 100)]
+  (future (operaciones-seguras 100 (range 1 11) fecha-random epdb)))
+
+(limpiar epdb)
+
+;; --------------------------
+(limpiar pdb)
+
+
+(doseq [x (range 1 10)]
+  (future (operaciones-seguras 1000 (range 1 11) fecha-random pdb)))
+;; TODO ver y descargar articulos sobre connection pooling en java
+
+;; alter table prestamo add column (realizado_el datetime default null);
+;; Ver si h2 vale para base de datos embedida para el sistema del
+;; seminario
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+(def dbc {:classname "org.hsqldb.jdbc.JDBCDriver"
+          :subprotocol "hsqldb"
+          :subname (str "./db/db.hsqldb")
+          :user "SA"
+          :password ""})
+
+(def fecha-random
+  (partial fecha-random-gen {:year (range 2000 2017) :month (range 1 13) :day (range 1 29)
+                             :hour (range 7 17) :minute (range 1 60) :second (range 1 60)}))
+
+(q dbc "select * from usuario")
+(insert dbc "insert into usuario(id, nombre, deuda) values (:id, :n, :d)"
+        {:id 10 :n "jorge" :d 0})
+
+(exec dbc "CREATE VIEW prestado AS SELECT p.usuario_id AS usuario_id ,coalesce(sum(p.monto), 0) AS prestado FROM prestamo AS p GROUP BY p.usuario_id")
+(q dbc "select * from prestado")
+(exec dbc "CREATE VIEW pagado AS SELECT p.usuario_id AS usuario_id ,coalesce(sum(p.monto), 0) AS pagado FROM pago AS p GROUP BY p.usuario_id")
+(q dbc "select * from pagado")
+(exec dbc "CREATE VIEW comprobador AS SELECT u.id AS id,u.nombre AS usuario,u.deuda AS deuda,(coalesce(spr.prestado,0) - coalesce(spa.pagado,0)) AS deuda_real from ((usuario AS u left join prestado AS spr on ((spr.usuario_id = u.id))) left join pagado AS spa on ((spa.usuario_id = u.id)))")
+
+
+(pprint (q dbc "select * from comprobador"))
+
+(doseq [x (range 1 20)]
+  (future (operaciones-seguras 1000 (range 1 11) fecha-random dbc)))
+
+(doseq [x (range 0 10)]
+  (future (operaciones-inseguras 1000 (range 1 11) fecha-random dbc)))
+
+(limpiar dbc)
+
+(exec dbc "shutdown")
 
 
 
-(doseq [x (range 1 10000)]
-  (future
-    (try
-      (operacion-segura pdb (operacion-aleatoria pdb 1))
-      (catch Exception e (prn (.getMessage e))))))
 
-(prestar-inseguro pdb 1 100)
-(pagar-inseguro pdb 1 100)
-(pagar-seguro pdb 1 100)
+
