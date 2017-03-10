@@ -16,8 +16,11 @@
                  [cljs-ajax "0.5.8"]
                  [com.cognitect/transit-cljs "0.8.239"]
                  [keybind "2.0.0"]
+                 [posh "0.5.5"]
 
                  ; server
+                 [incanter "1.5.7"]
+                 [org.clojure/data.csv "0.1.3"]
                  [com.stuartsierra/component "0.3.1"]
                  [com.cognitect/transit-clj "0.8.295"]
                  [http-kit "2.2.0"]    ; web server
@@ -28,8 +31,11 @@
                  [com.cognitect/transit-clj "0.8.288"]
                  [com.taoensso/sente "1.10.0"]
                  [hiccup "1.0.5"]
+                 [com.hypirion/clj-xchart "0.2.0"]
 
                  ; Utiles
+                 [clojure-csv/clojure-csv "2.0.1"]
+
                  [org.clojure/core.async "0.2.395"]
                  [funcool/cats "2.0.0"]
                  [funcool/lentes "1.1.0"]
