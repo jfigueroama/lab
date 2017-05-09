@@ -13,6 +13,7 @@
                                       ;cljsjs/react-dom
                                       ]]
                  [binaryage/devtools "0.8.3"]
+                 [cc.qbits/jet "0.7.11"]  ; jetty9
                  [re-frame "0.9.0" :exclusions [cljsjs/react]]
                  [cljs-ajax "0.5.8"]
                  [cljs-react-material-ui "0.2.30"]
