@@ -1,9 +1,0 @@
-.point {
-    transition-property: fill;
-    transition-duration: 1s;
-
-}
-
-.point:hover {
-    fill: green;
-}
