@@ -14,7 +14,7 @@
                  [org.clojure/java.jdbc "0.7.0-alpha1"]
                  [com.layerware/hugsql "0.4.7"]
                  [org.hsqldb/hsqldb "2.3.4"]
-
+                 [org.xerial/sqlite-jdbc "3.16.1"]
 
                  ]
   :plugins [[lein-gorilla "0.3.6"]])
