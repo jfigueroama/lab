@@ -3,10 +3,11 @@
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.9.0-alpha14"]
-                 
+  :dependencies [[org.clojure/clojure "1.9.0-alpha17"]
+             
+                 [jfigueroama/watch "0.1.0"]
                  ; Client
-                 [org.clojure/clojurescript "1.9.293"]
+                 [org.clojure/clojurescript "1.9.542"]
                  [reagent "0.6.0" :exclusions
                                      [org.clojure/tools.reader
                                       cljsjs/react
@@ -14,7 +15,7 @@
                                       ]]
                  [binaryage/devtools "0.8.3"]
                  [cc.qbits/jet "0.7.11"]  ; jetty9
-                 [re-frame "0.9.0" :exclusions [cljsjs/react]]
+                 [re-frame "0.9.2" :exclusions [cljsjs/react cljsjs/react-dom]]
                  [cljs-ajax "0.5.8"]
                  [cljs-react-material-ui "0.2.30"]
                  [com.cognitect/transit-cljs "0.8.239"]
@@ -33,12 +34,14 @@
                  [com.layerware/hugsql "0.4.7"]
                  [mysql/mysql-connector-java "6.0.4"]
 
+                 [org.clojure/core.async "0.3.443"]
+                 [funcool/cats "2.1.0"]
+ 
                  ; Otros
-                 [hawk "0.2.10"]  ; File watcher
                  [clj-time "0.12.0"]
                  [lein-light-nrepl "0.3.3"]]
 
-  :main server.core
+  ;:main server.core
 
   :plugins [;[lein-cljsbuild "1.1.4" :exclusions [[org.clojure/clojure]]]
             [lein-ancient "0.6.10"]]
