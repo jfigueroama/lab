@@ -12,5 +12,11 @@
         <h3>Probando la arquitectura de MH en workers.</h3>
         <hr/>
         <div id='mensajes'></div>
+
+<pre>
+worker1.postMessage({"value": 3000, "msg": "tiempo"});
+worker1.postMessage({"msg": "power", "value": true});
+worker1.postMessage({"msg": "power", "value": false});
+</pre>
     </body>
 </html>

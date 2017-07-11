@@ -52,6 +52,6 @@
 
 (set! (.-onmessage js/self) handle-message)
 
-; worker.postMessage({"value": 3000, "msg": "tiempo"});
-; worker.postMessage({"msg": "power", "value": true});
-; worker.postMessage({"msg": "power", "value": false});
+; worker1.postMessage({"value": 3000, "msg": "tiempo"});
+; worker1.postMessage({"msg": "power", "value": true});
+; worker1.postMessage({"msg": "power", "value": false});
