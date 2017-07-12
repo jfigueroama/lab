@@ -17,4 +17,4 @@
                  [org.xerial/sqlite-jdbc "3.16.1"]
 
                  ]
-  :plugins [[lein-gorilla "0.3.6"]])
+  :plugins [[lein-gorilla "0.4.0"]])
