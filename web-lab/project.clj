@@ -7,38 +7,42 @@
              
                  [jfigueroama/watch "0.1.0"]
                  ; Client
-                 [org.clojure/clojurescript "1.9.542"]
-                 [reagent "0.6.0" :exclusions
+                 [org.clojure/clojurescript "1.9.671"]
+                 [reagent "0.7.0" :exclusions
                                      [org.clojure/tools.reader
                                       cljsjs/react
                                       ;cljsjs/react-dom
                                       ]]
-                 [binaryage/devtools "0.8.3"]
+                 [binaryage/devtools "0.9.4"]
                  [cc.qbits/jet "0.7.11"]  ; jetty9
-                 [re-frame "0.9.2" :exclusions [cljsjs/react cljsjs/react-dom]]
-                 [cljs-ajax "0.5.8"]
-                 [cljs-react-material-ui "0.2.30"]
+                 [re-frame "0.9.4" :exclusions [cljsjs/react cljsjs/react-dom]]
+                 [cljs-ajax "0.6.0"]
+                 [cljs-react-material-ui "0.2.46"]
                  [com.cognitect/transit-cljs "0.8.239"]
                  [keybind "2.0.0"]
 
                  ; Server
                  [http-kit "2.2.0"]    ; web server
-                 [cheshire "5.6.3"]    ; json
-                 [ring/ring-core "1.5.0"] ; handlers
+                 [cheshire "5.7.1"]    ; json
+                 [ring/ring-core "1.6.1"] ; handlers
                  [javax.servlet/servlet-api "2.5"] ; manejo de datos POST
-                 [compojure "1.5.1"]    ; web framework
-                 [com.cognitect/transit-clj "0.8.288"]
+                 [compojure "1.6.0"]    ; web framework
+                 [com.cognitect/transit-clj "0.8.300"]
                  [hiccup "1.0.5"]
 
                  ; DB
                  [com.layerware/hugsql "0.4.7"]
-                 [mysql/mysql-connector-java "6.0.4"]
+                 [mysql/mysql-connector-java "6.0.6"]
+                 [org.xerial/sqlite-jdbc "3.19.3"]
+                 [com.h2database/h2 "1.4.196"]
+                 [org.postgresql/postgresql "42.1.1"]
 
                  [org.clojure/core.async "0.3.443"]
                  [funcool/cats "2.1.0"]
  
                  ; Otros
-                 [clj-time "0.12.0"]
+                 [clj-time "0.13.0"]
+                 [org.clojure/test.check "0.9.0"]
                  [lein-light-nrepl "0.3.3"]]
 
   ;:main server.core
@@ -55,11 +59,11 @@
 
   :profiles
   {:dev
-   {:dependencies [[devcards "0.2.2" :exclusions [cljsjs/react cljsjs/react-dom]]]
+   {:dependencies [[devcards "0.2.3" :exclusions [cljsjs/react cljsjs/react-dom]]]
 
     :plugins      [[lein-figwheel "0.5.4-7"]]}
 
-   :devcards {:dependencies [[devcards "0.2.2" :exclusions [cljsjs/react cljsjs/react-dom]]]
+   :devcards {:dependencies [[devcards "0.2.3" :exclusions [cljsjs/react cljsjs/react-dom]]]
 
               :plugins      [[lein-figwheel "0.5.4-7"]]}}
 
