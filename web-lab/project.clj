@@ -32,13 +32,17 @@
 
                  ; DB
                  [com.layerware/hugsql "0.4.7"]
-                 [mysql/mysql-connector-java "8.0.7"]
+                 [mysql/mysql-connector-java "6.0.6"]
+                 [org.xerial/sqlite-jdbc "3.19.3"]
+                 [com.h2database/h2 "1.4.196"]
+                 [org.postgresql/postgresql "42.1.1"]
 
                  [org.clojure/core.async "0.3.443"]
                  [funcool/cats "2.1.0"]
  
                  ; Otros
                  [clj-time "0.13.0"]
+                 [org.clojure/test.check "0.9.0"]
                  [lein-light-nrepl "0.3.3"]]
 
   ;:main server.core
