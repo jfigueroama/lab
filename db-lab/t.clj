@@ -158,4 +158,19 @@
 
 
 
+; ------- IN MEMORY ---------- ;
+; ----------------------------
 
+
+(require '[db-lab.utils :refer [q exec insert]])
+
+(def db {:subname (str "mem://localhost:3306/ca?"
+                       "useUnicode=yes"
+                       "&characterEncoding=UTF-8"
+                       "&serverTimezone=UTC")
+         :user "root"
+         :password ""
+         :useUnicode "yes"
+         :characterEncoding "UTF-8"
+         :classname "com.mysql.cj.jdbc.Driver"
+         :subprotocol "mysql"})

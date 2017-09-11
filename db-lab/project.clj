@@ -13,6 +13,7 @@
 
                  [org.clojure/java.jdbc "0.7.0-alpha1"]
                  [com.layerware/hugsql "0.4.7"]
+                 [mysql/mysql-connector-java "6.0.4"]
                  [org.hsqldb/hsqldb "2.3.4"]
                  [org.xerial/sqlite-jdbc "3.16.1"]
 
