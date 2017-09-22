@@ -76,7 +76,7 @@
   :fn (fn abs-fdef-fn
         [{{x :x} :args ret :ret}]
         (or (= x ret)
-            #_(= x (* -1 ret)))))
+            (= x (* -1 ret)))))
 
 
 (st/summarize-results (st/check `abs {:clojure.spec.test.check/opts {:num-tests 10000}}))

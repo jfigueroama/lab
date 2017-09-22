@@ -20,6 +20,7 @@
               ;invert 
               ]] :reload)
   (require '[cats.context :as ctx :refer [with-context]])
+  (require '[clojure.java.jdbc :as j])
   )
 
 
