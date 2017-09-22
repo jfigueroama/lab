@@ -5,11 +5,12 @@
               bimap left-map right-map
               unless ap ap-> ap->> as-ap-> curry lift-m lift-a
               ->= ->>= <$> <*> <=< =<< >=> >> >>=
+              as->=
               curry-lift-m 
               extract right-map 
               ;sequence mapseq forseq filter join  when
-              ]])
-  (require '[cats.builtin])
+              ]] :reload)
+  #_(require '[cats.builtin])
   (require '[cats.monad.maybe :as maybe :refer
              [just nothing cat-maybes from-maybe just? nothing? map-maybe 
               maybe->seq maybe? seq->maybe]] :reload)
@@ -46,7 +47,11 @@
 (ap + (just 1) (nothing) (just 2))  ; nothing
 (ap / (just 10) (just 2)) ; just 5
 (ap / (right 10) (left "error!")) ; error!
-(try-either (ap / (right 10) (right 0)))  ; left: divide by zero
+(try-either (/ 10 0))  ; left: divide by zero
+(try-either (/ 10 2))  ; right
+(ap / (right 10) (right 2))
+(ap / (right 10) (right 0))
+
 
 (fapply (just inc) (just 2))
 (fapply (just inc) (right 3))
@@ -91,3 +96,100 @@
        ]
       (+ a b c))
 
+;;;;;
+; 20170922
+(comp just inc)
+((comp just inc) 1)
+((comp #(* 2 %) inc) 0)
+
+(just 1)
+
+(defn minc
+  [x]
+  (just (inc x)))
+
+(defn msum
+  [& xs]
+  (just (apply + xs)))
+(msum 1 2 3 4)
+
+
+(minc 2)
+(defn mincn
+  [x]
+  (nothing))
+
+(->= (just 1)
+     minc
+     minc)  ; => just 3
+
+(as->= (just 1) x
+       (mincn x)
+       (minc x)
+       (minc x))  ; => nothing
+
+
+(fapply (just inc) (just 10))
+
+(as->= (just 1) x
+       (fapply (just inc) (just x))
+       (minc x)
+       (minc x))  ; => just 4
+
+(as->= (nothing) x
+       (fapply (just inc) (just x))
+       (minc x))
+
+(as->= (just 1) x
+       (minc x))
+
+(ap + (just 1) (just 2))
+(ap + (just 1) (nothing) (just 2))
+
+
+(fapply (just +) (just 1) (just 2) (just 3))
+(fapply (nothing) (just 1))
+(fapply (just +) (just 1))
+(fapply (just +) (nothing))
+
+(ap-> (just 1)
+      inc
+      inc)
+
+(defn div0
+  [x]
+  (/ x 0))
+
+(ap-> (just 1)
+      inc
+      div0
+      inc)
+
+(ap-> (nothing)
+      inc
+      inc)
+
+
+(defn mget
+  [hs k]
+  (if (nothing? (get hs k))
+    (nothing)
+    (just (get hs k))))
+
+(defn eget
+  [hs k]
+  (if (nothing? (get hs k))
+    (left k)
+    (right (get hs k))))
+
+(defn minc
+  [x]
+  (just (inc x)))
+
+(->= (just {:a 1 :b 2})
+     (mget :c)  ; nothing
+     minc)      ; => nothing
+
+(->= (just {:a 1 :b 2})
+     (mget :b)  ; just 2
+     minc)    ; just 3
