@@ -193,3 +193,7 @@
 (->= (just {:a 1 :b 2})
      (mget :b)  ; just 2
      minc)    ; just 3
+
+(->= (just {:a 1 :b 2})
+     (eget :b)  ; right 2
+     minc)
