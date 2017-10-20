@@ -14,5 +14,12 @@
 (.map distData identity)
 (.take distData 10)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(require '[powderkeg.core :as keg])
 
+(keg/rdd (range 100))
 
+(keg/rdd (range 100)     ; source
+         (filter odd?)          ; 1st transducer to apply
+         (map inc)              ; 2nd transducer
+         :partitions 2)         ; and options

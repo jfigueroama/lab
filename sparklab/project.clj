@@ -5,7 +5,9 @@
             :url ""}
   :dependencies [[org.clojure/clojure "1.9.0-beta2"]
                  ;[gorillalabs/sparkling "2.1.2"]
-                 
+ 
+                 [hcadatalab/powderkeg "0.5.1"]
+                 [com.esotericsoftware/kryo-shaded "4.0.1"] 
                  [org.apache.spark/spark-core_2.11 "2.2.0"]
                  [org.apache.spark/spark-sql_2.11 "2.2.0"]
                  [org.apache.spark/spark-streaming_2.11 "2.2.0"]
